@@ -1,0 +1,25 @@
+{
+    "name": "bogdan/task-manager",
+    "authors": [
+        {
+            "name": "Bogdan",
+            "email": "bmaletskyi@gmail.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "symfony/dependency-injection": "^4.2",
+        "symfony/routing": "^4.2",
+        "symfony/config": "^4.2",
+        "doctrine/orm": "^2.6",
+        "symfony/http-kernel": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^4.2"
+    }
+}
