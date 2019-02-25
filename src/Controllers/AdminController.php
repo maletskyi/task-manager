@@ -7,17 +7,9 @@ namespace App\Controllers;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 
-class AdminController extends Controller
+class AdminController extends AbstractController
 {
-    private $session;
-
-    public function __construct(Session $session)
-    {
-        $this->session = $session;
-    }
-
     public function login(Request $request): Response
     {
         $login = $request->get('login');
@@ -27,7 +19,7 @@ class AdminController extends Controller
             $this->session->set('login', 'admin');
             $this->session->set('password', sha1('123'));
 
-            $this->session->getFlashBag()->add('message', 'You successfully logged in');
+            $this->session->getFlashBag()->add('message', 'You are successfully logged in');
 
             return new RedirectResponse('/');
         }
@@ -42,7 +34,7 @@ class AdminController extends Controller
         $this->session->remove('login');
         $this->session->remove('password');
 
-        $this->session->getFlashBag()->add('message', 'You successfully logged out');
+        $this->session->getFlashBag()->add('message', 'You are successfully logged out');
 
         return new RedirectResponse('/');
     }

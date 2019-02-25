@@ -22,15 +22,20 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" href="/">Sign in</a>-->
-<!--            </li>-->
-            <form class="form-inline mt-2 mt-md-0" method="post" action="login">
-                <input class="form-control mr-sm-2" name="login" type="text" placeholder="Login" aria-label="Login">
-                <input class="form-control mr-sm-2" name="password" type="password" placeholder="Password"
-                       aria-label="Password">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign in</button>
-            </form>
+
+            <?php if (! isAdmin($session)): ?>
+                <form class="form-inline mt-2 mt-md-0" method="post" action="login">
+                    <input class="form-control mr-sm-2" name="login" type="text" placeholder="Login" aria-label="Login">
+                    <input class="form-control mr-sm-2" name="password" type="password" placeholder="Password"
+                           aria-label="Password">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign in</button>
+                </form>
+            <?php else: ?>
+                <li class="nav-item active">
+                    <a class="nav-link" href="logout">Logout</a>
+                </li>
+            <?php endif; ?>
+
         </ul>
     </div>
 </nav>

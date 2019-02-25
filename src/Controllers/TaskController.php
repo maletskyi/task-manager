@@ -6,20 +6,25 @@ namespace App\Controllers;
 
 use App\Entities\Task;
 use App\Services\TaskServiceInterface;
+use App\Validation\CreateTaskValidation;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Validation;
 
-class TaskController extends Controller
+class TaskController extends AbstractController
 {
     private $taskService;
-    private $session;
 
     public function __construct(TaskServiceInterface $taskService, Session $session)
     {
+        parent::__construct($session);
+
         $this->taskService = $taskService;
-        $this->session = $session;
     }
 
     public function index(Request $request): Response
@@ -33,7 +38,8 @@ class TaskController extends Controller
             $sort = 'username';
         }
 
-        $tasksPage = $this->taskService->getTasksPage((int) ($page ?? 1), $pageSize, $sort);
+        $tasksPage = $this->taskService->getTasksPage((int) ($page ?? 1), $pageSize,
+            $sort === 'status' ? 'isDone' : $sort);
         $totalPages = (int) ceil($tasksPage->count() / $pageSize);
 
         if ($page > $totalPages) {
@@ -45,13 +51,12 @@ class TaskController extends Controller
             'totalPages' => $totalPages,
             'sort' => $sort,
             'page' => $page,
-            'session' => $this->session,
         ]);
     }
 
     public function create(): Response
     {
-        return $this->view('task/create', ['session' => $this->session,]);
+        return $this->view('task/create');
     }
 
     public function save(Request $request): Response
@@ -59,6 +64,11 @@ class TaskController extends Controller
         $username = $request->get('username');
         $email = $request->get('email');
         $content = $request->get('content');
+
+        $validation = new CreateTaskValidation($request);
+        $validation->validate();
+
+        die();
 
         $task = new Task();
         $task->setUsername($username);
@@ -71,6 +81,6 @@ class TaskController extends Controller
             $this->session->getFlashBag()->add('error', 'Error during creation a new task');
         }
 
-       return new RedirectResponse('/');
+        return new RedirectResponse('/');
     }
 }

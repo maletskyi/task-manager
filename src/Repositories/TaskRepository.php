@@ -11,11 +11,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class TaskRepository extends EntityRepository implements TaskRepositoryInterface
 {
-    public function getAll(): array
-    {
-        return $this->findAll();
-    }
-
     public function getPage(int $pageNum, int $pageSize, string $order, string $destination = 'asc'): Paginator
     {
         $builder = $this
@@ -29,6 +24,17 @@ class TaskRepository extends EntityRepository implements TaskRepositoryInterface
     }
 
     public function create(Task $task): bool
+    {
+        try {
+            $this->getEntityManager()->persist($task);
+            $this->getEntityManager()->flush();
+            return true;
+        } catch (ORMException $exception) {
+            return true;
+        }
+    }
+
+    public function save(Task $task): bool
     {
         try {
             $this->getEntityManager()->persist($task);

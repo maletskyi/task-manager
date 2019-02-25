@@ -9,12 +9,6 @@ $isDevMode = true;
 
 $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__ . '/../src/Entities'), $isDevMode);
 
-$conn = array(
-    'dbname' => 'task_manager',
-    'user' => 'task_manager_user',
-    'password' => '12345',
-    'host' => 'localhost',
-    'driver' => 'pdo_mysql',
-);
+$conn = require __DIR__ . '/../config/database.php';
 
 $entityManager = EntityManager::create($conn, $config);

@@ -25,8 +25,8 @@ class Task
     /** @Column(type="text") * */
     protected $content;
 
-    /** @Column(type="string", columnDefinition="ENUM('approved', 'rejected')")) * */
-    protected $status;
+    /** @Column(type="boolean", name="is_done") * */
+    protected $isDone;
 
     public function getId()
     {
@@ -63,13 +63,13 @@ class Task
         $this->username = $username;
     }
 
-    public function getStatus()
+    public function getIsDone()
     {
-        return $this->status;
+        return $this->isDone;
     }
 
-    public function setStatus($status): void
+    public function setIsDone($isDone): void
     {
-        $this->status = $status;
+        $this->isDone = $isDone;
     }
 }

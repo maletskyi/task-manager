@@ -44,7 +44,10 @@
                                 Task from <?= $task->getUsername() ?> (<?= $task->getEmail() ?>)
                             </h5>
                             <p class="card-text"><?= $task->getContent() ?></p>
-                            <p class="card-text">Status: <?= $task->getStatus() ?? 'new' ?></p>
+                            <p class="card-text">Done: <?= $task->getIsDone() ? 'true' : 'false' ?></p>
+                            <?php if (isAdmin($session)): ?>
+                                <button type="button" class="btn btn-primary">Edit</button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

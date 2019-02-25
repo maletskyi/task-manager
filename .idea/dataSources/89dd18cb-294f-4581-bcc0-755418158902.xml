@@ -931,9 +931,11 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="231" parent="226" name="status">
+    <column id="231" parent="226" name="is_done">
       <Position>5</Position>
-      <DataType>enum(&apos;approved&apos;, &apos;rejected&apos;)|0e</DataType>
+      <DataType>tinyint(1)|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <key id="232" parent="226" name="PRIMARY">

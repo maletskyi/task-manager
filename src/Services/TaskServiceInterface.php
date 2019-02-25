@@ -9,13 +9,9 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 interface TaskServiceInterface
 {
-    public function getAllTasks();
-
     public function getTasksPage(int $pageNum, int $pageSize, string $order, string $destination): Paginator;
 
-    public function approveTask();
-
-    public function rejectTask();
-
     public function createTask(Task $task): bool;
+
+    public function editTask(Task $task): bool;
 }

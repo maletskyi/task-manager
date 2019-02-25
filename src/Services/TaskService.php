@@ -17,28 +17,18 @@ class TaskService implements TaskServiceInterface
         $this->taskRepository = $taskRepository;
     }
 
-    public function getAllTasks()
-    {
-        return $this->taskRepository->getAll();
-    }
-
     public function getTasksPage(int $pageNum, int $pageSize, string $order, string $destination = 'asc'): Paginator
     {
         return $this->taskRepository->getPage($pageNum, $pageSize, $order, $destination);
     }
 
-    public function approveTask()
-    {
-        dump('approve task');
-    }
-
-    public function rejectTask()
-    {
-
-    }
-
     public function createTask(Task $task): bool
     {
         return $this->taskRepository->create($task);
+    }
+
+    public function editTask(Task $task): bool
+    {
+        return $this->taskRepository->save($task);
     }
 }

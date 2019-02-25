@@ -3,11 +3,9 @@
 declare(strict_types=1);
 
 return [
-    'db_host' => '',
-
-    'db_name' => '',
-
-    'db_user' => '',
-
-    'db_password' => '',
+    'dbname' => 'task_manager',
+    'user' => 'task_manager_user',
+    'password' => '12345',
+    'host' => 'localhost',
+    'driver' => 'pdo_mysql',
 ];
