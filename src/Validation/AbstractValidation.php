@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Validation;
 abstract class AbstractValidation
 {
     protected $validator;
+
     protected $request;
 
     public function __construct(Request $request)

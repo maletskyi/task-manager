@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolation;
 
-class CreateTaskValidation extends AbstractValidation implements ValidationInterface
+class TaskValidation extends AbstractValidation implements ValidationInterface
 {
     public function validate()
     {

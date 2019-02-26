@@ -11,6 +11,11 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class TaskRepository extends EntityRepository implements TaskRepositoryInterface
 {
+    public function getById(int $id): ?Task
+    {
+        return $this->find($id);
+    }
+
     public function getPage(int $pageNum, int $pageSize, string $order, string $destination = 'asc'): Paginator
     {
         $builder = $this

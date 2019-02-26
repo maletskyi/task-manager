@@ -24,7 +24,7 @@
         <ul class="navbar-nav ml-auto">
 
             <?php if (! isAdmin($session)): ?>
-                <form class="form-inline mt-2 mt-md-0" method="post" action="login">
+                <form class="form-inline mt-2 mt-md-0" method="post" action="/login">
                     <input class="form-control mr-sm-2" name="login" type="text" placeholder="Login" aria-label="Login">
                     <input class="form-control mr-sm-2" name="password" type="password" placeholder="Password"
                            aria-label="Password">
@@ -32,7 +32,7 @@
                 </form>
             <?php else: ?>
                 <li class="nav-item active">
-                    <a class="nav-link" href="logout">Logout</a>
+                    <a class="nav-link" href="/logout">Logout</a>
                 </li>
             <?php endif; ?>
 

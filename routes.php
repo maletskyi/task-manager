@@ -17,6 +17,14 @@ $routes->add('tasks.save', new Route('/tasks/save', [
     '_controller' => [App\Controllers\TaskController::class, 'save'],
 ], [], [], '', [], ['POST']));
 
+$routes->add('tasks.edit', new Route('/tasks/edit/{id}', [
+    '_controller' => [App\Controllers\TaskController::class, 'edit'],
+], [], [], '', [], ['GET']));
+
+$routes->add('tasks.update', new Route('/tasks/update', [
+    '_controller' => [App\Controllers\TaskController::class, 'update'],
+], [], [], '', [], ['POST']));
+
 $routes->add('login', new Route('/login', [
     '_controller' => [App\Controllers\AdminController::class, 'login'],
 ], [], [], '', [], ['POST']));

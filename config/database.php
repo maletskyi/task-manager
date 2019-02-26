@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 return [
-    'dbname' => 'task_manager',
-    'user' => 'task_manager_user',
-    'password' => '12345',
+    'dbname' => 'maletskyi',
+    'user' => 'maletskyi',
+    'password' => '73095280Qq',
     'host' => 'localhost',
     'driver' => 'pdo_mysql',
 ];

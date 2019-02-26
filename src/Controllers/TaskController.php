@@ -7,14 +7,11 @@ namespace App\Controllers;
 use App\Entities\Task;
 use App\Services\TaskServiceInterface;
 use App\Validation\CreateTaskValidation;
+use App\Validation\TaskValidation;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Validation;
 
 class TaskController extends AbstractController
 {
@@ -56,7 +53,10 @@ class TaskController extends AbstractController
 
     public function create(): Response
     {
-        return $this->view('task/create');
+        return $this->view('task/create', [
+            'old' => $this->session->getFlashBag()->get('old'),
+            'errors' => $this->session->getFlashBag()->get('errors')
+        ]);
     }
 
     public function save(Request $request): Response
@@ -65,20 +65,81 @@ class TaskController extends AbstractController
         $email = $request->get('email');
         $content = $request->get('content');
 
-        $validation = new CreateTaskValidation($request);
-        $validation->validate();
+        $errors = (new TaskValidation($request))->validate();
 
-        die();
+        if (count($errors) > 0) {
+            $this->session->getFlashBag()->set('errors', $errors);
+
+            $this->session->getFlashBag()->set('old', [
+                'username' => $username,
+                'email' => $email,
+                'content' => $content,
+            ]);
+
+            return new RedirectResponse('/tasks/create');
+        }
 
         $task = new Task();
         $task->setUsername($username);
         $task->setContent($content);
         $task->setEmail($email);
+        $task->setIsDone(false);
 
         if ($this->taskService->createTask($task)) {
             $this->session->getFlashBag()->add('message', 'New task successfully created');
         } else {
             $this->session->getFlashBag()->add('error', 'Error during creation a new task');
+        }
+
+        return new RedirectResponse('/');
+    }
+
+    public function edit(Request $request, int $id): Response
+    {
+        $task = $this->taskService->getTaskById($id);
+
+        if ($task === null) {
+            return $this->view('404', [], 404);
+        }
+
+        return $this->view('task/edit', [
+            'task' => $task,
+        ]);
+    }
+
+    public function update(Request $request): Response
+    {
+        $id = $request->get('id');
+        $username = $request->get('username');
+        $email = $request->get('email');
+        $content = $request->get('content');
+        $isDone = $request->get('is_done');
+
+        $errors = (new TaskValidation($request))->validate();
+
+        if (count($errors) > 0) {
+            $this->session->getFlashBag()->set('errors', $errors);
+
+            $this->session->getFlashBag()->set('old', [
+                'username' => $username,
+                'email' => $email,
+                'content' => $content,
+                'is_done' => $isDone,
+            ]);
+
+            return new RedirectResponse('/tasks/edit');
+        }
+
+        $task = new Task();
+        $task->setUsername($username);
+        $task->setContent($content);
+        $task->setEmail($email);
+        $task->setIsDone($isDone ? true : false);
+
+        if ($this->taskService->createTask($task)) {
+            $this->session->getFlashBag()->add('message', 'The task successfully updated');
+        } else {
+            $this->session->getFlashBag()->add('error', 'Error during updating the task');
         }
 
         return new RedirectResponse('/');

@@ -18,11 +18,11 @@ use Symfony\Component\Routing\RequestContext;
 
 ini_set('display_errors', '1');
 
-require __DIR__ . '/../bootstrap/bootstrap.php';
+require __DIR__ . '/bootstrap/bootstrap.php';
 
-$config = require __DIR__ . '/../config/app.php';
+$config = require __DIR__ . '/config/app.php';
 
-$routes = (new RoutesLoader(new FileLocator([__DIR__ . '/task-manager'])))->load($config['routesFile']);
+$routes = (new RoutesLoader(new FileLocator([__DIR__])))->load($config['routesFile']);
 
 $container = new ContainerBuilder();
 
@@ -32,7 +32,7 @@ $session->start();
 $container->set(Session::class, $session);
 $container->set(EntityManagerInterface::class, $entityManager);
 
-(new ContainerLoader($container, new FileLocator([__DIR__ . '/task-manager'])))->load($config['dependenciesFile']);
+(new ContainerLoader($container, new FileLocator([__DIR__])))->load($config['dependenciesFile']);
 
 $dispatcher = new EventDispatcher();
 

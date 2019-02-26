@@ -17,6 +17,11 @@ class TaskService implements TaskServiceInterface
         $this->taskRepository = $taskRepository;
     }
 
+    public function getTaskById(int $id): ?Task
+    {
+        return $this->taskRepository->getById($id);
+    }
+
     public function getTasksPage(int $pageNum, int $pageSize, string $order, string $destination = 'asc'): Paginator
     {
         return $this->taskRepository->getPage($pageNum, $pageSize, $order, $destination);

@@ -46,7 +46,7 @@
                             <p class="card-text"><?= $task->getContent() ?></p>
                             <p class="card-text">Done: <?= $task->getIsDone() ? 'true' : 'false' ?></p>
                             <?php if (isAdmin($session)): ?>
-                                <button type="button" class="btn btn-primary">Edit</button>
+                                <a href="/tasks/edit/<?= $task->getId() ?>" class="btn btn-primary">Edit</a>
                             <?php endif; ?>
                         </div>
                     </div>
