@@ -6,7 +6,6 @@ namespace App\Controllers;
 
 use App\Entities\Task;
 use App\Services\TaskServiceInterface;
-use App\Validation\CreateTaskValidation;
 use App\Validation\TaskValidation;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +46,7 @@ class TaskController extends AbstractController
             'tasks' => $tasksPage,
             'totalPages' => $totalPages,
             'sort' => $sort,
-            'page' => $page,
+            'page' => $page === null ? 1 : (int) $page,
         ]);
     }
 
@@ -85,7 +84,7 @@ class TaskController extends AbstractController
         $task->setEmail($email);
         $task->setIsDone(false);
 
-        if ($this->taskService->createTask($task)) {
+        if ($this->taskService->saveOrCreateTask($task)) {
             $this->session->getFlashBag()->add('message', 'New task successfully created');
         } else {
             $this->session->getFlashBag()->add('error', 'Error during creation a new task');
@@ -98,18 +97,27 @@ class TaskController extends AbstractController
     {
         $task = $this->taskService->getTaskById($id);
 
-        if ($task === null) {
+        if ($task === null || ! isAdmin($this->session)) {
             return $this->view('404', [], 404);
         }
 
         return $this->view('task/edit', [
             'task' => $task,
+            'old' => $this->session->getFlashBag()->get('old'),
+            'errors' => $this->session->getFlashBag()->get('errors')
         ]);
     }
 
     public function update(Request $request): Response
     {
-        $id = $request->get('id');
+        $id = (int) $request->get('id');
+
+        $task = $this->taskService->getTaskById($id);
+
+        if ($task === null || ! isAdmin($this->session)) {
+            return $this->view('404', [], 404);
+        }
+
         $username = $request->get('username');
         $email = $request->get('email');
         $content = $request->get('content');
@@ -127,16 +135,15 @@ class TaskController extends AbstractController
                 'is_done' => $isDone,
             ]);
 
-            return new RedirectResponse('/tasks/edit');
+            return new RedirectResponse('/tasks/edit/' . $id);
         }
 
-        $task = new Task();
         $task->setUsername($username);
         $task->setContent($content);
         $task->setEmail($email);
         $task->setIsDone($isDone ? true : false);
 
-        if ($this->taskService->createTask($task)) {
+        if ($this->taskService->saveOrCreateTask($task)) {
             $this->session->getFlashBag()->add('message', 'The task successfully updated');
         } else {
             $this->session->getFlashBag()->add('error', 'Error during updating the task');

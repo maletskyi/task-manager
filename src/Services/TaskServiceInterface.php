@@ -13,7 +13,5 @@ interface TaskServiceInterface
 
     public function getTasksPage(int $pageNum, int $pageSize, string $order, string $destination): Paginator;
 
-    public function createTask(Task $task): bool;
-
-    public function editTask(Task $task): bool;
+    public function saveOrCreateTask(Task $task): bool;
 }

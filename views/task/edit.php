@@ -44,7 +44,8 @@
                     <div class="form-group">
                         <div class="form-check">
                             <input class="form-check-input"
-                                   type="checkbox" <?= isset($isDone) && $isDone !== null ? 'checked' : '' ?> name="is_done">
+                                   type="checkbox" <?= $task->getIsDone() ? 'checked' : '' ?>
+                                   name="is_done">
                             <label class="form-check-label" for="is_done">Done</label>
                         </div>
                     </div>

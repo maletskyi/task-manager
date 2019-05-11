@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\Routing\Loader\PhpFileLoader as RoutesLoader;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -24,10 +25,10 @@ $config = require __DIR__ . '/config/app.php';
 
 $routes = (new RoutesLoader(new FileLocator([__DIR__])))->load($config['routesFile']);
 
-$container = new ContainerBuilder();
-
 $session = new Session();
 $session->start();
+
+$container = new ContainerBuilder();
 
 $container->set(Session::class, $session);
 $container->set(EntityManagerInterface::class, $entityManager);
@@ -46,6 +47,12 @@ $kernel = new HttpKernel(
 
 $request = Request::createFromGlobals();
 
-$response = $kernel->handle($request)->send();
+try {
+    $response = $kernel->handle($request)->send();
+} catch (NotFoundHttpException $e) {
+    header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404);
+    include 'views/404.php';
+    exit();
+}
 
 $kernel->terminate($request, $response);

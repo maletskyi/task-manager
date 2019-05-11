@@ -28,18 +28,7 @@ class TaskRepository extends EntityRepository implements TaskRepositoryInterface
         return new Paginator($builder);
     }
 
-    public function create(Task $task): bool
-    {
-        try {
-            $this->getEntityManager()->persist($task);
-            $this->getEntityManager()->flush();
-            return true;
-        } catch (ORMException $exception) {
-            return true;
-        }
-    }
-
-    public function save(Task $task): bool
+    public function saveOrCreate(Task $task): bool
     {
         try {
             $this->getEntityManager()->persist($task);

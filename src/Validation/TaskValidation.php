@@ -7,11 +7,10 @@ namespace App\Validation;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\ConstraintViolation;
 
-class TaskValidation extends AbstractValidation implements ValidationInterface
+class TaskValidation extends AbstractValidation
 {
-    public function validate()
+    public function validate(): array
     {
         $username = $this->request->get('username');
         $email = $this->request->get('email');

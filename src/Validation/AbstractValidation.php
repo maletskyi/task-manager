@@ -18,4 +18,6 @@ abstract class AbstractValidation
         $this->request = $request;
         $this->validator = Validation::createValidator();
     }
+
+    abstract public function validate(): array;
 }

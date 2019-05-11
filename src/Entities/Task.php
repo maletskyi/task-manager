@@ -33,6 +33,11 @@ class Task
         return $this->id;
     }
 
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
     public function getEmail()
     {
         return $this->email;

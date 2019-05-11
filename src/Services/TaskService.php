@@ -27,13 +27,8 @@ class TaskService implements TaskServiceInterface
         return $this->taskRepository->getPage($pageNum, $pageSize, $order, $destination);
     }
 
-    public function createTask(Task $task): bool
+    public function saveOrCreateTask(Task $task): bool
     {
-        return $this->taskRepository->create($task);
-    }
-
-    public function editTask(Task $task): bool
-    {
-        return $this->taskRepository->save($task);
+        return $this->taskRepository->saveOrCreate($task);
     }
 }

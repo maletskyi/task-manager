@@ -13,7 +13,5 @@ interface TaskRepositoryInterface
 
     public function getPage(int $pageNum, int $pageSize, string $order, string $destination): Paginator;
 
-    public function create(Task $task): bool;
-
-    public function save(Task $task): bool;
+    public function saveOrCreate(Task $task): bool;
 }
